@@ -1,20 +1,18 @@
 package me.duquee.createutilities;
 
 import com.simibubi.create.foundation.data.CreateRegistrate;
-
 import me.duquee.createutilities.blocks.CUBlocks;
 import me.duquee.createutilities.blocks.CUTileEntities;
 import me.duquee.createutilities.blocks.voidtypes.CUContainerTypes;
 import me.duquee.createutilities.blocks.voidtypes.battery.VoidBatteryData;
 import me.duquee.createutilities.blocks.voidtypes.chest.VoidChestInventoriesData;
+import me.duquee.createutilities.blocks.voidtypes.motor.VoidMotorNetworkHandler;
 import me.duquee.createutilities.blocks.voidtypes.tank.VoidTanksData;
 import me.duquee.createutilities.items.CUItems;
-import me.duquee.createutilities.blocks.voidtypes.motor.VoidMotorNetworkHandler;
+import me.duquee.createutilities.mountedstorage.CUMountedStorages;
 import me.duquee.createutilities.networking.CUPackets;
-
 import me.duquee.createutilities.tabs.CUCreativeTabs;
 import net.minecraft.resources.ResourceLocation;
-
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -56,6 +54,7 @@ public class CreateUtilities {
 		CUTileEntities.register();
 		CUContainerTypes.register();
 		CUCreativeTabs.register(modEventBus);
+		CUMountedStorages.register();
 
 		modEventBus.addListener(CreateUtilities::init);
 		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->

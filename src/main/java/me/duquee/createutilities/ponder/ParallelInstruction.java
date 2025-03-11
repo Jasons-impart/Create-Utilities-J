@@ -1,10 +1,8 @@
 package me.duquee.createutilities.ponder;
 
-import com.simibubi.create.foundation.ponder.PonderScene;
-import com.simibubi.create.foundation.ponder.SceneBuilder;
-import com.simibubi.create.foundation.ponder.instruction.PonderInstruction;
-
-import me.duquee.createutilities.mixins.SceneBuilderAccessor;
+import net.createmod.ponder.api.scene.SceneBuilder;
+import net.createmod.ponder.foundation.PonderScene;
+import net.createmod.ponder.foundation.instruction.PonderInstruction;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -17,9 +15,8 @@ public class ParallelInstruction extends PonderInstruction {
 
 	public final ParallelSceneBuilder scene;
 
-	public ParallelInstruction(SceneBuilder scene) {
-		PonderScene ponderScene = ((SceneBuilderAccessor) scene).getScene();
-		this.scene = new ParallelSceneBuilder(ponderScene, this);
+	public ParallelInstruction(SceneBuilder builder) {
+		this.scene = new ParallelSceneBuilder(builder, this);
 	}
 
 	@Override

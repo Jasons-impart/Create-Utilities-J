@@ -1,14 +1,12 @@
 package me.duquee.createutilities.blocks.voidtypes.chest;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer;
-import com.simibubi.create.foundation.render.CachedBufferer;
-import com.simibubi.create.foundation.render.SuperByteBuffer;
-
 import me.duquee.createutilities.blocks.CUPartialsModels;
 import me.duquee.createutilities.blocks.voidtypes.VoidTileRenderer;
+import net.createmod.catnip.render.CachedBuffers;
+import net.createmod.catnip.render.SuperByteBuffer;
 import net.minecraft.client.model.SkullModel;
 import net.minecraft.client.model.SkullModelBase;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -33,15 +31,15 @@ public class VoidChestRenderer extends SafeBlockEntityRenderer<VoidChestTileEnti
 		BlockState blockState = te.getBlockState();
 		Direction facing = blockState.getValue(VoidChestBlock.FACING).getOpposite();
 
-		SuperByteBuffer lid = CachedBufferer.partial(CUPartialsModels.VOID_CHEST_LID, blockState);
+		SuperByteBuffer lid = CachedBuffers.partial(CUPartialsModels.VOID_CHEST_LID, blockState);
 		float lidAngle = te.lid.getValue(partialTicks);
 
 		VertexConsumer builder = buffer.getBuffer(RenderType.cutoutMipped());
-		lid.centre()
-				.rotateY(-facing.toYRot())
-				.unCentre()
+		lid.center()
+				.rotateYDegrees(-facing.toYRot())
+				.uncenter()
 				.translate(0, 10 / 16f, 15 / 16f)
-				.rotateX(135 * lidAngle)
+				.rotateXDegrees(135 * lidAngle)
 				.translate(0, -10 / 16f, -15 / 16f)
 				.light(light)
 				.renderInto(ms, builder);

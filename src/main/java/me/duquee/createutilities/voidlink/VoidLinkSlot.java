@@ -1,16 +1,15 @@
 package me.duquee.createutilities.voidlink;
 
-import com.jozufozu.flywheel.util.transform.TransformStack;
 import com.mojang.blaze3d.vertex.PoseStack;
-
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueBoxTransform;
-import com.simibubi.create.foundation.utility.AngleHelper;
-import com.simibubi.create.foundation.utility.VecHelper;
-
+import dev.engine_room.flywheel.lib.transform.TransformStack;
+import net.createmod.catnip.math.AngleHelper;
+import net.createmod.catnip.math.VecHelper;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-
 import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.function.Function;
@@ -54,14 +53,14 @@ public class VoidLinkSlot extends ValueBoxTransform {
 	}
 
 	public boolean testHit(BlockState state, Vec3 localHit) {
-		Vec3 offset = getLocalOffset(state);
+		Vec3 offset = getLocalOffset(null, null, state);
 		if (offset == null)
 			return false;
 		return localHit.distanceTo(offset) < scale / 3.5f;
 	}
 
 	@Override
-	public Vec3 getLocalOffset(BlockState state) {
+	public Vec3 getLocalOffset(LevelAccessor level, BlockPos pos, BlockState state) {
 
 		Direction facing = facingGetter.apply(state);
 		if (facing.getAxis().isHorizontal()) {
@@ -74,11 +73,11 @@ public class VoidLinkSlot extends ValueBoxTransform {
 	}
 
 	@Override
-	public void rotate(BlockState state, PoseStack ms) {
+	public void rotate(LevelAccessor level, BlockPos pos, BlockState state, PoseStack ms) {
 		Direction facing = facingGetter.apply(state);
 		float yRot = facing.getAxis().isVertical() ? 90 : AngleHelper.horizontalAngle(facing);
 		float xRot = facing == Direction.UP ? 270 : facing == Direction.DOWN ? 90 : 0;
-		TransformStack.cast(ms).rotateY(yRot).rotateX(xRot);
+		TransformStack.of(ms).rotateYDegrees(yRot).rotateXDegrees(xRot);
 	}
 
 	@Override

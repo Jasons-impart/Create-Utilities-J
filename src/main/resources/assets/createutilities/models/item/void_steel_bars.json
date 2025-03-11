@@ -1,7 +1,6 @@
 {
-  "parent": "create:item/bars",
+  "parent": "minecraft:item/generated",
   "textures": {
-    "bars": "createutilities:block/bars/void_steel_bars",
-    "edge": "createutilities:block/bars/void_steel_bars_edge"
+    "layer0": "createutilities:block/bars/void_steel_bars"
   }
 }

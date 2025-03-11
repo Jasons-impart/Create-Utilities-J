@@ -2,31 +2,26 @@ package me.duquee.createutilities.blocks;
 
 import com.simibubi.create.AllSpriteShifts;
 import com.simibubi.create.AllTags;
-import com.simibubi.create.Create;
+import com.simibubi.create.api.contraption.storage.item.MountedItemStorageType;
 import com.simibubi.create.content.decoration.MetalLadderBlock;
 import com.simibubi.create.content.decoration.MetalScaffoldingBlock;
 import com.simibubi.create.content.decoration.encasing.CasingBlock;
 import com.simibubi.create.content.decoration.encasing.EncasedCTBehaviour;
-import com.simibubi.create.content.kinetics.BlockStressDefaults;
 import com.simibubi.create.foundation.data.BuilderTransformers;
 import com.simibubi.create.foundation.data.CreateRegistrate;
-import com.simibubi.create.foundation.data.MetalBarsGen;
 import com.simibubi.create.foundation.data.SharedProperties;
-import com.simibubi.create.foundation.data.TagGen;
 import com.tterrag.registrate.util.DataIngredient;
 import com.tterrag.registrate.util.entry.BlockEntry;
-
+import me.duquee.createutilities.blocks.gearcube.GearcubeBlock;
 import me.duquee.createutilities.blocks.lgearbox.LShapedGearboxBlock;
 import me.duquee.createutilities.blocks.voidtypes.battery.VoidBatteryBlock;
 import me.duquee.createutilities.blocks.voidtypes.chest.VoidChestBlock;
 import me.duquee.createutilities.blocks.voidtypes.motor.VoidMotorBlock;
-import me.duquee.createutilities.blocks.gearcube.GearcubeBlock;
 import me.duquee.createutilities.blocks.voidtypes.tank.VoidTankBlock;
 import me.duquee.createutilities.items.CUItems;
+import me.duquee.createutilities.mountedstorage.CUMountedStorages;
 import me.duquee.createutilities.tabs.CUCreativeTabs;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -34,8 +29,6 @@ import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
-
-import java.util.function.Supplier;
 
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static com.simibubi.create.foundation.data.TagGen.axeOrPickaxe;
@@ -68,8 +61,16 @@ public class CUBlocks {
 					() -> DataIngredient.items(CUItems.VOID_STEEL_INGOT.get()), MapColor.COLOR_GREEN))
 			.register();
 
-	public static final BlockEntry<IronBarsBlock> VOID_STEEL_BARS = createBars("void_steel", true,
-			() -> DataIngredient.items(CUItems.VOID_STEEL_INGOT.get()), MapColor.COLOR_GREEN);
+	public static final BlockEntry<IronBarsBlock> VOID_STEEL_BARS = REGISTRATE.block("void_steel_bars", IronBarsBlock::new)
+			.addLayer(() -> RenderType::cutoutMipped)
+			.initialProperties(() -> Blocks.IRON_BARS)
+			.properties(p -> p.sound(SoundType.COPPER).mapColor(MapColor.COLOR_GREEN))
+			.tag(AllTags.AllBlockTags.WRENCH_PICKUP.tag)
+			.tag(AllTags.AllBlockTags.FAN_TRANSPARENT.tag)
+			.transform(pickaxeOnly())
+			.item()
+			.build()
+			.register();
 
 	public static final BlockEntry<CasingBlock> VOID_CASING = REGISTRATE.block("void_casing", CasingBlock::new)
 			.transform(BuilderTransformers.casing(() -> CUSpriteShifts.VOID_CASING))
@@ -84,7 +85,7 @@ public class CUBlocks {
 			.properties(p -> p.mapColor(MapColor.COLOR_BLACK))
 			.properties(p -> p.strength(30F, 600.0F))
 			.transform(pickaxeOnly())
-			.transform(BlockStressDefaults.setNoImpact())
+			//.transform(CStress.setNoImpact())
 			.item()
 			.properties(p -> p.rarity(Rarity.EPIC))
 			.transform(customItemModel())
@@ -96,6 +97,7 @@ public class CUBlocks {
 			.properties(p -> p.mapColor(MapColor.COLOR_BLACK))
 			.properties(p -> p.strength(30F, 600.0F))
 			.transform(pickaxeOnly())
+			.transform(MountedItemStorageType.mountedItemStorage(CUMountedStorages.VOID_CHEST))
 			.item()
 			.properties(p -> p.rarity(Rarity.EPIC))
 			.transform(customItemModel())
@@ -128,7 +130,7 @@ public class CUBlocks {
 			.initialProperties(SharedProperties::stone)
 			.properties(BlockBehaviour.Properties::noOcclusion)
 			.properties(p -> p.mapColor(MapColor.PODZOL))
-			.transform(BlockStressDefaults.setNoImpact())
+			//.transform(CStress.setNoImpact())
 			.transform(axeOrPickaxe())
 			.simpleItem()
 			.register();
@@ -137,7 +139,7 @@ public class CUBlocks {
 			.initialProperties(SharedProperties::stone)
 			.properties(BlockBehaviour.Properties::noOcclusion)
 			.properties(p -> p.mapColor(MapColor.PODZOL))
-			.transform(BlockStressDefaults.setNoImpact())
+			//.transform(CStress.setNoImpact())
 			.transform(axeOrPickaxe())
 			.onRegister(CreateRegistrate.connectedTextures(() -> new EncasedCTBehaviour(AllSpriteShifts.ANDESITE_CASING)))
 			.onRegister(CreateRegistrate.casingConnectivity((block, cc) -> cc.make(block, AllSpriteShifts.ANDESITE_CASING,
@@ -160,31 +162,6 @@ public class CUBlocks {
 			.transform(pickaxeOnly())
 			.simpleItem()
 			.register();
-
-	private static BlockEntry<IronBarsBlock> createBars(String name, boolean specialEdge,
-													   	Supplier<DataIngredient> ingredient, MapColor color) {
-
-		return REGISTRATE.block(name + "_bars", IronBarsBlock::new)
-				.addLayer(() -> RenderType::cutoutMipped)
-				.initialProperties(() -> Blocks.IRON_BARS)
-				.properties(p -> p.sound(SoundType.COPPER)
-						.mapColor(color))
-				.tag(AllTags.AllBlockTags.WRENCH_PICKUP.tag)
-				.tag(AllTags.AllBlockTags.FAN_TRANSPARENT.tag)
-				.transform(TagGen.pickaxeOnly())
-				.blockstate(MetalBarsGen.barsBlockState(name, specialEdge))
-				.item()
-				.model((c, p) -> {
-					ResourceLocation barsTexture = p.modLoc("block/bars/" + name + "_bars");
-					p.withExistingParent(c.getName(), Create.asResource("item/bars"))
-							.texture("bars", barsTexture)
-							.texture("edge", specialEdge ? p.modLoc("block/bars/" + name + "_bars_edge") : barsTexture);
-				})
-				.recipe((c, p) -> p.stonecutting(ingredient.get(), RecipeCategory.DECORATIONS, c::get, 4))
-				.build()
-				.register();
-
-	}
 
 	public static void register() {}
 

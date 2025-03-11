@@ -1,35 +1,29 @@
 package me.duquee.createutilities.blocks.voidtypes.battery;
 
-import java.util.List;
-
-import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
-
-import com.simibubi.create.foundation.utility.LangBuilder;
-
+import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
+import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
+import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+import me.duquee.createutilities.CreateUtilities;
 import me.duquee.createutilities.CreateUtilitiesClient;
+import me.duquee.createutilities.blocks.voidtypes.VoidLinkBehaviour;
+import me.duquee.createutilities.voidlink.VoidLinkSlot;
+import net.createmod.catnip.lang.LangBuilder;
+import net.createmod.catnip.math.VecHelper;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-
 import net.minecraft.network.chat.Component;
-
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import org.apache.commons.lang3.tuple.Triple;
-
-import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
-import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
-import com.simibubi.create.foundation.utility.VecHelper;
-
-import me.duquee.createutilities.CreateUtilities;
-import me.duquee.createutilities.blocks.voidtypes.VoidLinkBehaviour;
-import me.duquee.createutilities.voidlink.VoidLinkSlot;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class VoidBatteryTileEntity extends SmartBlockEntity implements IHaveGoggleInformation {
 

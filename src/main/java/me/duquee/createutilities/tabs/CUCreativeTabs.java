@@ -7,7 +7,10 @@ import me.duquee.createutilities.CreateUtilities;
 import me.duquee.createutilities.blocks.CUBlocks;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -21,8 +24,9 @@ import static me.duquee.createutilities.CreateUtilities.REGISTRATE;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class CUCreativeTabs {
-	private static final DeferredRegister<CreativeModeTab> TAB_REGISTER =
-			DeferredRegister.create(Registries.CREATIVE_MODE_TAB, CreateUtilities.ID);
+
+	private static final DeferredRegister<CreativeModeTab> TAB_REGISTER = DeferredRegister
+			.create(Registries.CREATIVE_MODE_TAB, CreateUtilities.ID);
 
 	public static final RegistryObject<CreativeModeTab> BASE = TAB_REGISTER.register("base",
 			() -> CreativeModeTab.builder()

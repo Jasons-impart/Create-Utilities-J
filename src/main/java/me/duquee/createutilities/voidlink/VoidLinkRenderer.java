@@ -10,13 +10,12 @@ import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueBox;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueBoxRenderer;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueBoxTransform;
-import com.simibubi.create.foundation.utility.Components;
-import com.simibubi.create.foundation.utility.Lang;
-import com.simibubi.create.foundation.utility.VecHelper;
-
+import com.simibubi.create.foundation.utility.CreateLang;
 import com.simibubi.create.infrastructure.config.AllConfigs;
 import me.duquee.createutilities.CreateUtilities;
 import me.duquee.createutilities.blocks.voidtypes.VoidLinkBehaviour;
+import net.createmod.catnip.math.VecHelper;
+import net.createmod.catnip.outliner.Outliner;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.SkullModelBase;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -53,9 +52,9 @@ public class VoidLinkRenderer {
 		if (behaviour == null)
 			return;
 
-		Component freq1 = Lang.translateDirect("logistics.firstFrequency");
-		Component freq2 = Lang.translateDirect("logistics.secondFrequency");
-		Component player = Components.translatable(CreateUtilities.ID + ".logistics.owner");
+		Component freq1 = CreateLang.translateDirect("logistics.firstFrequency");
+		Component freq2 = CreateLang.translateDirect("logistics.secondFrequency");
+		Component player = Component.translatable(CreateUtilities.ID + ".logistics.owner");
 
 		for (int index : VoidLinkHandler.arr012) {
 			AABB bb = new AABB(Vec3.ZERO, Vec3.ZERO).inflate(.25f);
@@ -68,7 +67,7 @@ public class VoidLinkRenderer {
 			boolean isEmpty = index == 2 ? behaviour.getOwner() == null : behaviour.getFrequencyStack(index == 0).isEmpty();
 
 			if (!isEmpty) box.wideOutline();
-			CreateClient.OUTLINER.showValueBox(Pair.of(index, pos), box.transform(transform))
+			Outliner.getInstance().showOutline(Pair.of(index, pos), box.transform(transform))
 					.highlightFace(result.getDirection());
 
 			if (!hit) continue;
@@ -76,10 +75,10 @@ public class VoidLinkRenderer {
 			List<MutableComponent> tip = new ArrayList<>();
 			if (index < 2) {
 				tip.add(label.copy());
-				tip.add(Lang.translateDirect(isEmpty ? "logistics.filter.click_to_set" : "logistics.filter.click_to_replace"));
+				tip.add(CreateLang.translateDirect(isEmpty ? "logistics.filter.click_to_set" : "logistics.filter.click_to_replace"));
 			} else {
 				tip.add(label.copy());
-				tip.add(Components.translatable(CreateUtilities.ID +
+				tip.add(Component.translatable(CreateUtilities.ID +
 						(isEmpty ? ".logistics.void.click_to_set_owner" : ".logistics.void.click_to_remove_owner")));
 			}
 
@@ -110,7 +109,7 @@ public class VoidLinkRenderer {
 				ItemStack stack = behaviour.getFrequencyStack(index == 0);
 
 				ms.pushPose();
-				transform.transform(te.getBlockState(), ms);
+				transform.transform(te.getLevel(), te.getBlockPos(), te.getBlockState(), ms);
 				ValueBoxRenderer.renderItemIntoValueBox(stack, ms, buffer, light, overlay);
 				ms.popPose();
 
@@ -121,7 +120,7 @@ public class VoidLinkRenderer {
 
 				ms.pushPose();
 
-				transform.transform(te.getBlockState(), ms);
+				transform.transform(te.getLevel(), te.getBlockPos(), te.getBlockState(), ms);
 				float scale = 1.01f;
 				ms.scale(scale, scale, scale);
 				ms.translate(0, -.25f, 0);

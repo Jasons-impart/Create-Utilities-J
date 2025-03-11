@@ -1,12 +1,11 @@
 package me.duquee.createutilities.blocks.lgearbox;
 
-import com.simibubi.create.content.contraptions.ITransformableBlock;
+import com.simibubi.create.api.contraption.transformable.TransformableBlock;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.content.kinetics.base.KineticBlock;
 import com.simibubi.create.content.kinetics.gearbox.GearboxBlockEntity;
 import com.simibubi.create.foundation.block.IBE;
-
 import me.duquee.createutilities.blocks.CUTileEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -22,7 +21,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 
-public class LShapedGearboxBlock extends KineticBlock implements IBE<GearboxBlockEntity>, ITransformableBlock {
+public class LShapedGearboxBlock extends KineticBlock implements IBE<GearboxBlockEntity>, TransformableBlock {
 
 	public static final DirectionProperty FACING_1 = BlockStateProperties.HORIZONTAL_FACING;
 	public static final DirectionProperty FACING_2 = DirectionProperty.create("facing_2",

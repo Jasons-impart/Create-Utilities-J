@@ -3,13 +3,11 @@ package me.duquee.createutilities.blocks.voidtypes.motor;
 import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
-import com.simibubi.create.foundation.utility.VecHelper;
-
 import me.duquee.createutilities.voidlink.VoidLinkSlot;
+import net.createmod.catnip.math.VecHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-
 import org.apache.commons.lang3.tuple.Triple;
 
 import java.util.List;

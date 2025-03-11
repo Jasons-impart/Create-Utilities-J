@@ -1,5 +1,6 @@
 
 buildscript {
+    ext.kotlin_version = '2.0.21'
     repositories {
         maven { url = 'https://maven.minecraftforge.net' }
         mavenCentral()
@@ -9,6 +10,7 @@ buildscript {
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
         classpath "org.spongepowered:mixingradle:${mixingradle_version}"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
@@ -18,6 +20,7 @@ plugins {
     id 'com.matthewprenger.cursegradle' version '1.4.0'
 }
 apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'kotlin'
 apply plugin: 'org.spongepowered.mixin'
 
 
@@ -97,29 +100,32 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
 
-    maven { // Flywheel
-        url = "https://maven.tterrag.com/"
-    }
+    maven { url = "https://maven.createmod.net" } // Create, Ponder, Flywheel
+    maven { url = "https://maven.tterrag.com" } // Registrate
     maven {
         url 'https://www.cursemaven.com'
         content {
             includeGroup "curse.maven"
         }
     }
+    mavenCentral()
 }
 
 dependencies {
 
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    // Create Flywheel and Registrate
+    // Create, Ponder, Flywheel, Registrate
     implementation fg.deobf("com.simibubi.create:create-${minecraft_version}:${create_version}:all") { transitive = false }
-    implementation fg.deobf("com.jozufozu.flywheel:flywheel-forge-${minecraft_version}:${flywheel_version}")
+    compileOnly(fg.deobf("dev.engine-room.flywheel:flywheel-forge-api-${minecraft_version}:${flywheel_version}"))
+    runtimeOnly(fg.deobf("dev.engine-room.flywheel:flywheel-forge-${minecraft_version}:${flywheel_version}"))
     compileOnly fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")
+    implementation(fg.deobf("net.createmod.ponder:Ponder-Forge-${minecraft_version}:${ponder_version}"))
 
     // Sponge
     annotationProcessor "org.spongepowered:mixin:0.8.3:processor"
     testAnnotationProcessor "org.spongepowered:mixin:0.8.3:processor"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }
 
 jar {
@@ -154,4 +160,6 @@ publishing {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
+}
+compileKotlin {
 }

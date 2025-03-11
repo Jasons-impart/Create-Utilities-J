@@ -3,11 +3,9 @@ package me.duquee.createutilities.blocks.voidtypes.motor;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
-
-import com.simibubi.create.foundation.render.CachedBufferer;
-import com.simibubi.create.foundation.render.SuperByteBuffer;
-
 import me.duquee.createutilities.blocks.voidtypes.VoidTileRenderer;
+import net.createmod.catnip.render.CachedBuffers;
+import net.createmod.catnip.render.SuperByteBuffer;
 import net.minecraft.client.model.SkullModel;
 import net.minecraft.client.model.SkullModelBase;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -53,7 +51,7 @@ public class VoidMotorRenderer extends KineticBlockEntityRenderer<VoidMotorTileE
 
 	@Override
 	protected SuperByteBuffer getRotatedModel(VoidMotorTileEntity te, BlockState state) {
-		return CachedBufferer.partialFacing(AllPartialModels.SHAFT_HALF, state);
+		return CachedBuffers.partialFacing(AllPartialModels.SHAFT_HALF, state);
 	}
 
 }

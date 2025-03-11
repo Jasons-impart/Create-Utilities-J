@@ -1,10 +1,8 @@
 package me.duquee.createutilities.blocks.voidtypes.tank;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-
 import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer;
 import com.simibubi.create.foundation.fluid.FluidRenderer;
-
 import me.duquee.createutilities.blocks.voidtypes.VoidTileRenderer;
 import net.minecraft.client.model.SkullModel;
 import net.minecraft.client.model.SkullModelBase;
@@ -27,8 +25,18 @@ public class VoidTankRenderer extends SafeBlockEntityRenderer<VoidTankTileEntity
 		renderVoid(te, partialTicks, ms, buffer, light, overlay);
 
 		FluidTank tank = te.getFluidStorage();
-		if (!te.isClosed() && !tank.isEmpty())
-			FluidRenderer.renderFluidBox(tank.getFluid(), .125F, .25F, .125F, .875F, .25F + 0.5F * tank.getFluidAmount()/tank.getCapacity(), .875F, buffer, ms, light, false);
+		if (!te.isClosed() && !tank.isEmpty()) {
+			FluidRenderer.renderFluidBox(
+					tank.getFluid().getFluid(), tank.getFluidAmount(),
+					.125F, .25F, .125F, .875F, .25F + 0.5F * tank.getFluidAmount()/tank.getCapacity(), .875F,
+					buffer, ms, light, false, true, tank.getFluid().getTag()
+			);
+		}
+			/*FluidRenderer.renderFluidBox(
+					tank.getFluid(),
+					.125F, .25F, .125F, .875F, .25F + 0.5F * tank.getFluidAmount()/tank.getCapacity(), .875F,
+					buffer, ms, light, false, false
+			);*/
 	}
 
 	@Override

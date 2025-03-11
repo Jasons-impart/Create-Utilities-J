@@ -7,9 +7,9 @@ import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BehaviourType;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueBoxTransform;
-import com.simibubi.create.foundation.utility.NBTHelper;
 import me.duquee.createutilities.blocks.voidtypes.motor.VoidMotorNetworkHandler.NetworkKey;
 import me.duquee.createutilities.voidlink.VoidLinkSlot;
+import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
@@ -17,11 +17,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-
 import org.apache.commons.lang3.tuple.Triple;
 
 import javax.annotation.Nullable;
-
 import java.util.Objects;
 
 public class VoidLinkBehaviour extends BlockEntityBehaviour implements ClipboardCloneable {
@@ -102,7 +100,7 @@ public class VoidLinkBehaviour extends BlockEntityBehaviour implements Clipboard
 	public boolean testHit(int index, Vec3 hit) {
 		BlockState state = blockEntity.getBlockState();
 		Vec3 localHit = hit.subtract(Vec3.atLowerCornerOf(blockEntity.getBlockPos()));
-		return getSlot(index).testHit(state, localHit);
+		return getSlot(index).testHit(blockEntity.getLevel(), blockEntity.getBlockPos(), state, localHit);
 	}
 
 	public ValueBoxTransform getSlot(int index) {
