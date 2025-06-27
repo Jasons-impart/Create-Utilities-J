@@ -8,6 +8,12 @@
   "block.createutilities.void_tank": "Эндеритовый бак",
   "block.createutilities.void_battery": "Эндеритовая батарея",
   "block.createutilities.void_casing": "Эндеритовый корпус",
+  "block.createutilities.void_steel_block": "Блок эндерита",
+  "block.createutilities.void_steel_scaffolding": "Эндеритовые подмостки",
+  "block.createutilities.void_steel_ladder": "Эндеритовая лестница",
+  "block.createutilities.void_steel_bars": "Эндеритовые прутья",
+  "block.createutilities.amethyst_tiles": "Плитка из аметиста",
+  "block.createutilities.small_amethyst_tiles": "Мелкая плитка из аметиста",
 
   "item.createutilities.void_steel_ingot": "Эндеритовый слиток",
   "item.createutilities.void_steel_sheet": "Эндеритовый лист",
@@ -62,5 +68,4 @@
   "createutilities.ponder.void_battery.text_4": "Щёлкните по нему правой кнопкой мыши ещё раз, чтобы сделать настройки общедоступными",
   "createutilities.ponder.void_battery.text_5": "Если владелец закреплён, то только он может изменить частоту эндеритовой батареи",
   "createutilities.ponder.void_battery.text_6": "Эндеритовая батарея будет получать энергию только от эндеритовой батарей с той же частотой и с тем же владельцем"
-
 }

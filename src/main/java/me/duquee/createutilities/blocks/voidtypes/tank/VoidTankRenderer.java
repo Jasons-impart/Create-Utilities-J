@@ -1,8 +1,8 @@
 package me.duquee.createutilities.blocks.voidtypes.tank;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer;
-import com.simibubi.create.foundation.fluid.FluidRenderer;
+import com.simibubi.create.foundation.blockEntity.renderer.SmartBlockEntityRenderer;
+import net.createmod.catnip.platform.ForgeCatnipServices;
 import me.duquee.createutilities.blocks.voidtypes.VoidTileRenderer;
 import net.minecraft.client.model.SkullModel;
 import net.minecraft.client.model.SkullModelBase;
@@ -12,11 +12,14 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
-public class VoidTankRenderer extends SafeBlockEntityRenderer<VoidTankTileEntity> implements VoidTileRenderer<VoidTankTileEntity> {
+public class VoidTankRenderer
+		extends SmartBlockEntityRenderer<VoidTankTileEntity>
+		implements VoidTileRenderer<VoidTankTileEntity> {
 
 	private final SkullModelBase skullModelBase;
 
 	public VoidTankRenderer(BlockEntityRendererProvider.Context context) {
+		super(context);
 		skullModelBase = new SkullModel(context.getModelSet().bakeLayer(ModelLayers.PLAYER_HEAD));
 	}
 
@@ -26,17 +29,12 @@ public class VoidTankRenderer extends SafeBlockEntityRenderer<VoidTankTileEntity
 
 		FluidTank tank = te.getFluidStorage();
 		if (!te.isClosed() && !tank.isEmpty()) {
-			FluidRenderer.renderFluidBox(
-					tank.getFluid().getFluid(), tank.getFluidAmount(),
-					.125F, .25F, .125F, .875F, .25F + 0.5F * tank.getFluidAmount()/tank.getCapacity(), .875F,
-					buffer, ms, light, false, true, tank.getFluid().getTag()
-			);
-		}
-			/*FluidRenderer.renderFluidBox(
+			ForgeCatnipServices.FLUID_RENDERER.renderFluidBox(
 					tank.getFluid(),
 					.125F, .25F, .125F, .875F, .25F + 0.5F * tank.getFluidAmount()/tank.getCapacity(), .875F,
-					buffer, ms, light, false, false
-			);*/
+					buffer, ms, light, false, true
+			);
+		}
 	}
 
 	@Override
@@ -51,11 +49,11 @@ public class VoidTankRenderer extends SafeBlockEntityRenderer<VoidTankTileEntity
 
 	@Override
 	public float getFrameWidth() {
-		return .75F;
+		return 0.75f;
 	}
 
 	@Override
 	public float getFrameOffset(Direction direction) {
-		return direction.getAxis() == Direction.Axis.Y ? .251F : .124F;
+		return direction.getAxis() == Direction.Axis.Y ? 0.251f : 0.124f;
 	}
 }

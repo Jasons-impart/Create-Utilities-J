@@ -116,11 +116,13 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
     // Create, Ponder, Flywheel, Registrate
-    implementation fg.deobf("com.simibubi.create:create-${minecraft_version}:${create_version}:all") { transitive = false }
+    implementation(fg.deobf("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false })
+    implementation(fg.deobf("net.createmod.ponder:Ponder-Forge-${minecraft_version}:${ponder_version}"))
     compileOnly(fg.deobf("dev.engine-room.flywheel:flywheel-forge-api-${minecraft_version}:${flywheel_version}"))
     runtimeOnly(fg.deobf("dev.engine-room.flywheel:flywheel-forge-${minecraft_version}:${flywheel_version}"))
-    compileOnly fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")
-    implementation(fg.deobf("net.createmod.ponder:Ponder-Forge-${minecraft_version}:${ponder_version}"))
+    implementation(fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}"))
+    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.1"))
+    implementation("io.github.llamalad7:mixinextras-forge:0.4.1")
 
     // Sponge
     annotationProcessor "org.spongepowered:mixin:0.8.3:processor"
@@ -162,4 +164,13 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
 compileKotlin {
+}
+
+// GPT fix for circular dependency.
+mixin {
+    add sourceSets.main, "createutilities.refmap.json"
+    config "createutilities.mixins.json"
+
+    // This helps prevent task cycle issues
+    reobfSrgFile = file("${buildDir}/createSrgToMcp/output.srg")
 }
