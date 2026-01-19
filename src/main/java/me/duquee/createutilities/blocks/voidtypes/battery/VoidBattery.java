@@ -2,11 +2,11 @@ package me.duquee.createutilities.blocks.voidtypes.battery;
 
 import me.duquee.createutilities.CreateUtilities;
 import me.duquee.createutilities.blocks.voidtypes.motor.VoidMotorNetworkHandler.NetworkKey;
-import me.duquee.createutilities.networking.CUPackets;
-import me.duquee.createutilities.networking.packets.VoidBatteryUpdatePacket;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.energy.EnergyStorage;
-import net.minecraftforge.network.PacketDistributor;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class VoidBattery extends EnergyStorage {
 
@@ -35,9 +35,12 @@ public class VoidBattery extends EnergyStorage {
 		return extracted;
 	}
 
+	public static Map<NetworkKey, VoidBattery> updateMSG = new HashMap<>();
+	public static Map<NetworkKey, Boolean> updated = new HashMap<>();
 	private void onContentsChanged() {
 		if (CreateUtilities.VOID_BATTERIES_DATA != null) CreateUtilities.VOID_BATTERIES_DATA.setDirty();
-		CUPackets.channel.send(PacketDistributor.ALL.noArg(), new VoidBatteryUpdatePacket(key, this));
+		updateMSG.put(key, this);
+		updated.put(key, true);
 	}
 
 	public CompoundTag serializeNBT() {
@@ -49,5 +52,4 @@ public class VoidBattery extends EnergyStorage {
 	public void deserializeNBT(CompoundTag nbt) {
 		energy = nbt.getInt("Energy");
 	}
-
 }
