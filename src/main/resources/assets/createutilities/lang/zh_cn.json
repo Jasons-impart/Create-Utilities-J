@@ -8,6 +8,12 @@
   "block.createutilities.void_tank": "虚空流体储罐",
   "block.createutilities.void_battery": "虚空蓄电池",
   "block.createutilities.void_casing": "虚空机壳",
+  "block.createutilities.void_steel_block": "虚空钢块",
+  "block.createutilities.void_steel_scaffolding": "虚空钢脚手架",
+  "block.createutilities.void_steel_ladder": "虚空钢梯子",
+  "block.createutilities.void_steel_bars": "虚空钢栏杆",
+  "block.createutilities.amethyst_tiles": "紫水晶砖块",
+  "block.createutilities.small_amethyst_tiles": "紫水晶小砖块",
 
   "item.createutilities.void_steel_ingot": "虚空钢锭",
   "item.createutilities.void_steel_sheet": "虚空钢板",
@@ -62,5 +68,4 @@
   "createutilities.ponder.void_battery.text_4": "再次右键点击可重新认领它",
   "createutilities.ponder.void_battery.text_5": "如果虚空蓄电池被认领，只有所有者才能编辑其频率",
   "createutilities.ponder.void_battery.text_6": "虚空蓄电池只能在相同频率和相同所有者的虚空蓄电池间传递能量"
-
 }
