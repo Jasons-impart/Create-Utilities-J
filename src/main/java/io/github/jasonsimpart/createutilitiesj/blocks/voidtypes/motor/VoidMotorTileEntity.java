@@ -38,7 +38,7 @@ public class VoidMotorTileEntity extends KineticBlockEntity {
 	}
 
 	public void onConnectToVoidNetwork() {
-		attachKinetics();
+		updateSpeed = true;
 	}
 
 	public void onDisconnectFromVoidNetwork() {
