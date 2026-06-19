@@ -1,0 +1,110 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version, for example 0.4.0"
+        required: true
+        type: string
+      version_type:
+        description: "CurseForge release channel"
+        required: true
+        default: "release"
+        type: choice
+        options:
+          - release
+          - beta
+          - alpha
+
+permissions:
+  contents: write
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Make Gradle wrapper executable
+        run: chmod +x ./gradlew
+
+      - name: Resolve release metadata
+        id: release
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            VERSION="${{ inputs.version }}"
+            VERSION_TYPE="${{ inputs.version_type }}"
+          else
+            VERSION="${GITHUB_REF_NAME#v}"
+            VERSION_TYPE="release"
+          fi
+          VERSION="${VERSION#v}"
+          TAG="v${VERSION}"
+          NAME="Create Utilities J ${VERSION} for Minecraft 1.21.1"
+          {
+            echo "version=${VERSION}"
+            echo "version_type=${VERSION_TYPE}"
+            echo "tag=${TAG}"
+            echo "name=${NAME}"
+          } >> "${GITHUB_OUTPUT}"
+
+      - name: Build
+        run: ./gradlew clean build -Pmod_version=${{ steps.release.outputs.version }} --no-configuration-cache
+
+      - name: Write changelog
+        shell: bash
+        run: |
+          cat > CHANGELOG_RELEASE.md <<'EOF'
+          - Ported to Minecraft 1.21.1 / NeoForge.
+          - Updated Create dependency for 1.21.1.
+          - Migrated networking to NeoForge payload API.
+          - Migrated saved data and capability registration.
+          - Restored the Create Utilities J creative tab.
+          - Fixed empty ItemStack frequency serialization crashes.
+          EOF
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: create-utilities-j-${{ steps.release.outputs.version }}
+          path: build/libs/*.jar
+          if-no-files-found: error
+
+      - name: Publish GitHub and CurseForge release
+        uses: Kir-Antipov/mc-publish@v3.3
+        with:
+          files: build/libs/*.jar
+          name: ${{ steps.release.outputs.name }}
+          version: ${{ steps.release.outputs.version }}
+          version-type: ${{ steps.release.outputs.version_type }}
+          changelog-file: CHANGELOG_RELEASE.md
+          loaders: |
+            neoforge
+          game-versions: |
+            1.21.1
+          java: |
+            21
+
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-tag: ${{ steps.release.outputs.tag }}
+
+          curseforge-id: 1437484
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+          curseforge-dependencies: |
+            328085(required)
