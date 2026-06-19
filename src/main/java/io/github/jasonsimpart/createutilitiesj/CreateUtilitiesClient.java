@@ -6,9 +6,9 @@ import io.github.jasonsimpart.createutilitiesj.blocks.voidtypes.battery.VoidBatt
 import io.github.jasonsimpart.createutilitiesj.blocks.voidtypes.tank.VoidTank;
 import io.github.jasonsimpart.createutilitiesj.ponder.CUPonderPlugin;
 import net.createmod.ponder.foundation.PonderIndex;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 
 public class CreateUtilitiesClient {
 

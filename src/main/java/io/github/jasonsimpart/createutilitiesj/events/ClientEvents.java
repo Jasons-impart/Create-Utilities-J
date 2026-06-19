@@ -2,16 +2,16 @@ package io.github.jasonsimpart.createutilitiesj.events;
 
 import io.github.jasonsimpart.createutilitiesj.voidlink.VoidLinkRenderer;
 import net.minecraft.client.Minecraft;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 
-@Mod.EventBusSubscriber(Dist.CLIENT)
+@EventBusSubscriber(value = Dist.CLIENT)
 public class ClientEvents {
 
 	@SubscribeEvent
-	public static void onTick(TickEvent.ClientTickEvent event) {
+	public static void onTick(ClientTickEvent.Post event) {
 		if (!isGameActive()) return;
 		VoidLinkRenderer.tick();
 	}

@@ -2,7 +2,8 @@ package io.github.jasonsimpart.createutilitiesj.blocks.voidtypes.tank;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.blockEntity.renderer.SmartBlockEntityRenderer;
-import net.createmod.catnip.platform.ForgeCatnipServices;
+import net.createmod.catnip.platform.CatnipServices;
+import net.createmod.catnip.render.FluidRenderHelper;
 import io.github.jasonsimpart.createutilitiesj.blocks.voidtypes.VoidTileRenderer;
 import net.minecraft.client.model.SkullModel;
 import net.minecraft.client.model.SkullModelBase;
@@ -10,13 +11,17 @@ import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 
 public class VoidTankRenderer
 		extends SmartBlockEntityRenderer<VoidTankTileEntity>
 		implements VoidTileRenderer<VoidTankTileEntity> {
 
 	private final SkullModelBase skullModelBase;
+	@SuppressWarnings("unchecked")
+	private static final FluidRenderHelper<FluidStack> FLUID_RENDERER =
+			(FluidRenderHelper<FluidStack>) CatnipServices.FLUID_RENDERER;
 
 	public VoidTankRenderer(BlockEntityRendererProvider.Context context) {
 		super(context);
@@ -29,7 +34,7 @@ public class VoidTankRenderer
 
 		FluidTank tank = te.getFluidStorage();
 		if (!te.isClosed() && !tank.isEmpty()) {
-			ForgeCatnipServices.FLUID_RENDERER.renderFluidBox(
+			FLUID_RENDERER.renderFluidBox(
 					tank.getFluid(),
 					.125F, .25F, .125F, .875F, .25F + 0.5F * tank.getFluidAmount()/tank.getCapacity(), .875F,
 					buffer, ms, light, false, true

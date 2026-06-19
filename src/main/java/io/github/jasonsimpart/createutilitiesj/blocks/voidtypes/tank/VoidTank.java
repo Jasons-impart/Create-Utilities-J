@@ -3,7 +3,7 @@ package io.github.jasonsimpart.createutilitiesj.blocks.voidtypes.tank;
 import com.simibubi.create.infrastructure.config.AllConfigs;
 import io.github.jasonsimpart.createutilitiesj.CreateUtilitiesJ;
 import io.github.jasonsimpart.createutilitiesj.blocks.voidtypes.motor.VoidMotorNetworkHandler.NetworkKey;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -16,14 +16,15 @@ import net.createmod.ponder.api.scene.Selection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 import java.util.function.Consumer;
 
@@ -294,8 +295,8 @@ public class VoidScenes {
 		scene.idle(7);
 		scene.world().restoreBlocks(firstBlock);
 		scene.world().modifyBlockEntityNBT(firstBlock, beType, nbt -> {
-			nbt.put("FrequencyFirst", sapling.save(new CompoundTag()));
-			nbt.put("FrequencyLast", iron.save(new CompoundTag()));
+			nbt.put("FrequencyFirst", itemTag(sapling));
+			nbt.put("FrequencyLast", itemTag(iron));
 		});
 
 		if (isTank) onConnect.accept(firstPos);
@@ -342,7 +343,14 @@ public class VoidScenes {
 									  ItemStack item) {
 		scene.overlay().showControls(slotPos, pointing, 30).withItem(item);
 		scene.idle(7);
-		scene.world().modifyBlockEntityNBT(block, beType, nbt -> nbt.put(slotId, item.save(new CompoundTag())));
+		scene.world().modifyBlockEntityNBT(block, beType, nbt -> nbt.put(slotId, itemTag(item)));
+	}
+
+	private static CompoundTag itemTag(ItemStack item) {
+		CompoundTag tag = new CompoundTag();
+		tag.putString("id", BuiltInRegistries.ITEM.getKey(item.getItem()).toString());
+		tag.putInt("count", item.getCount());
+		return tag;
 	}
 
 	private static Vec3 getFirstFrequency(Vec3 faceVec, Direction face, float shift, float yOffset) {

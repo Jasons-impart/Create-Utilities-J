@@ -6,19 +6,19 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.items.SlotItemHandler;
+import net.neoforged.neoforge.items.SlotItemHandler;
 
 public class VoidChestContainer extends MenuBase<VoidChestTileEntity> {
 
 
-	public VoidChestContainer(MenuType<?> type, int id, Inventory inv, FriendlyByteBuf extraData) {
+	public VoidChestContainer(MenuType<?> type, int id, Inventory inv, RegistryFriendlyByteBuf extraData) {
 		super(type, id, inv, extraData);
 	}
 
@@ -32,7 +32,7 @@ public class VoidChestContainer extends MenuBase<VoidChestTileEntity> {
 	}
 
 	@Override
-	protected VoidChestTileEntity createOnClient(FriendlyByteBuf extraData) {
+	protected VoidChestTileEntity createOnClient(RegistryFriendlyByteBuf extraData) {
 		BlockPos readBlockPos = extraData.readBlockPos();
 		CompoundTag readNbt = extraData.readNbt();
 
@@ -40,7 +40,7 @@ public class VoidChestContainer extends MenuBase<VoidChestTileEntity> {
 		assert world != null;
 		BlockEntity tileEntity = world.getBlockEntity(readBlockPos);
 		if (tileEntity instanceof VoidChestTileEntity voidChest) {
-			voidChest.read(readNbt, true);
+			voidChest.read(readNbt, extraData.registryAccess(), true);
 			return voidChest;
 		}
 

@@ -2,6 +2,7 @@ package io.github.jasonsimpart.createutilitiesj.blocks.voidtypes.chest;
 
 import io.github.jasonsimpart.createutilitiesj.blocks.voidtypes.VoidStorageData;
 import io.github.jasonsimpart.createutilitiesj.blocks.voidtypes.motor.VoidMotorNetworkHandler.NetworkKey;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 
 import org.jetbrains.annotations.NotNull;
@@ -13,12 +14,12 @@ public class VoidChestInventoriesData extends VoidStorageData<VoidChestInventory
 	}
 
 	@Override
-	public @NotNull CompoundTag save(@NotNull CompoundTag tag) {
-		return super.save(tag, VoidChestInventory::isEmpty, VoidChestInventory::serializeNBT);
+	public @NotNull CompoundTag save(@NotNull CompoundTag tag, HolderLookup.Provider registries) {
+		return super.save(tag, registries, VoidChestInventory::isEmpty, VoidChestInventory::serializeNBT);
 	}
 
-	public static VoidChestInventoriesData load(CompoundTag tag) {
-		return load(tag, VoidChestInventoriesData::new, VoidChestInventory::new, VoidChestInventory::deserializeNBT);
+	public static VoidChestInventoriesData load(CompoundTag tag, HolderLookup.Provider registries) {
+		return load(tag, registries, VoidChestInventoriesData::new, VoidChestInventory::new, VoidChestInventory::deserializeNBT);
 	}
 
 }

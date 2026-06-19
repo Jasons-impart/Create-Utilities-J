@@ -10,14 +10,13 @@ import io.github.jasonsimpart.createutilitiesj.voidlink.VoidLinkSlot;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import org.apache.commons.lang3.tuple.Triple;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -54,24 +53,20 @@ public class VoidTankTileEntity extends SmartBlockEntity implements IHaveGoggleI
 				CreateUtilitiesClient.VOID_TANKS.computeStorageIfAbsent(link.getNetworkKey());
 	}
 
-	@Override
-	public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-		if (cap == ForgeCapabilities.FLUID_HANDLER) {
-			return LazyOptional.of(this::getFluidStorage).cast();
-		}
-		return super.getCapability(cap, side);
+	public FluidTank getFluidStorage(@Nullable Direction side) {
+		return getFluidStorage();
 	}
 
 	@Override
-	protected void read(CompoundTag tag, boolean clientPacket) {
-		super.read(tag, clientPacket);
-		if (clientPacket) getFluidStorage().readFromNBT(tag.getCompound("Tank"));
+	protected void read(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
+		super.read(tag, registries, clientPacket);
+		if (clientPacket) getFluidStorage().readFromNBT(registries, tag.getCompound("Tank"));
 	}
 
 	@Override
-	protected void write(CompoundTag tag, boolean clientPacket) {
-		if (clientPacket) tag.put("Tank", getFluidStorage().writeToNBT(new CompoundTag()));
-		super.write(tag, clientPacket);
+	protected void write(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
+		if (clientPacket) tag.put("Tank", getFluidStorage().writeToNBT(registries, new CompoundTag()));
+		super.write(tag, registries, clientPacket);
 	}
 
 	public boolean isClosed() {
@@ -80,6 +75,6 @@ public class VoidTankTileEntity extends SmartBlockEntity implements IHaveGoggleI
 
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-		return containedFluidTooltip(tooltip, isPlayerSneaking, getCapability(ForgeCapabilities.FLUID_HANDLER));
+		return containedFluidTooltip(tooltip, isPlayerSneaking, level.getCapability(Capabilities.FluidHandler.BLOCK, worldPosition, getBlockState(), this, null));
 	}
 }

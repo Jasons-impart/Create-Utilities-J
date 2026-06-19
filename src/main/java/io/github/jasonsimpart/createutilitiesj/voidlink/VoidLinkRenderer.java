@@ -26,6 +26,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.SkullBlock;
@@ -136,10 +137,10 @@ public class VoidLinkRenderer {
 	}
 
 	public static void renderSkull(GameProfile owner, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, SkullModelBase model) {
-		RenderType renderType = SkullBlockRenderer.getRenderType(SkullBlock.Types.PLAYER, owner);
+		RenderType renderType = SkullBlockRenderer.getRenderType(SkullBlock.Types.PLAYER, new ResolvableProfile(owner));
 		poseStack.scale(-1.0F, -1.0F, 1.0F);
 		VertexConsumer vertexConsumer = bufferSource.getBuffer(renderType);
-		model.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+		model.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY);
 	}
 
 }

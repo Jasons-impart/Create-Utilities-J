@@ -1,6 +1,7 @@
 package io.github.jasonsimpart.createutilitiesj.mountedstorage;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.simibubi.create.api.contraption.storage.item.MountedItemStorageType;
 import com.simibubi.create.api.contraption.storage.item.WrapperMountedItemStorage;
 import io.github.jasonsimpart.createutilitiesj.CUCodecs;
@@ -21,6 +22,9 @@ import org.jetbrains.annotations.Nullable;
 public class VoidChestMountedStorage extends WrapperMountedItemStorage<VoidChestInventory> {
 
     public static final Codec<VoidChestMountedStorage> CODEC = CUCodecs.NETWORK_KEY_CODEC
+            .xmap(VoidChestMountedStorage::new, (storage) -> storage.wrapped.getKey());
+    public static final MapCodec<VoidChestMountedStorage> MAP_CODEC = CUCodecs.NETWORK_KEY_CODEC
+            .fieldOf("Key")
             .xmap(VoidChestMountedStorage::new, (storage) -> storage.wrapped.getKey());
 
     protected VoidChestMountedStorage(MountedItemStorageType<?> type, VoidChestInventory wrapped) {

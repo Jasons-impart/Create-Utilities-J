@@ -10,7 +10,7 @@ public class CUPonders {
 
 	public static void registerScenes(PonderSceneRegistrationHelper<ResourceLocation> helper) {
 
-		PonderSceneRegistrationHelper<ItemProviderEntry<?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
+		PonderSceneRegistrationHelper<ItemProviderEntry<?, ?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
 
 		HELPER.addStoryBoard(CUBlocks.VOID_MOTOR, "void_motor", VoidScenes::voidMotor);
 		HELPER.addStoryBoard(CUBlocks.VOID_CHEST, "void_chest", VoidScenes::voidChest);

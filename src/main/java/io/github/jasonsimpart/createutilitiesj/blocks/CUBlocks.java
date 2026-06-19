@@ -20,7 +20,6 @@ import io.github.jasonsimpart.createutilitiesj.blocks.voidtypes.motor.VoidMotorB
 import io.github.jasonsimpart.createutilitiesj.blocks.voidtypes.tank.VoidTankBlock;
 import io.github.jasonsimpart.createutilitiesj.items.CUItems;
 import io.github.jasonsimpart.createutilitiesj.mountedstorage.CUMountedStorages;
-import io.github.jasonsimpart.createutilitiesj.tabs.CUCreativeTabs;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.Block;
@@ -36,10 +35,6 @@ import static com.simibubi.create.foundation.data.TagGen.pickaxeOnly;
 import static io.github.jasonsimpart.createutilitiesj.CreateUtilitiesJ.REGISTRATE;
 
 public class CUBlocks {
-
-	static {
-		REGISTRATE.setCreativeTab(CUCreativeTabs.BASE);
-	}
 
 	public static final BlockEntry<Block> VOID_STEEL_BLOCK = REGISTRATE.block("void_steel_block", Block::new)
 			.initialProperties(() -> Blocks.NETHERITE_BLOCK)

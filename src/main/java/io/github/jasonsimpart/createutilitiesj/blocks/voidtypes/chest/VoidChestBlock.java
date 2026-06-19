@@ -2,6 +2,7 @@ package io.github.jasonsimpart.createutilitiesj.blocks.voidtypes.chest;
 
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 
+import com.mojang.serialization.MapCodec;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import io.github.jasonsimpart.createutilitiesj.blocks.CUTileEntities;
@@ -30,12 +31,17 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.network.NetworkHooks;
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.WATERLOGGED;
 
 public class VoidChestBlock extends HorizontalDirectionalBlock implements IWrenchable, SimpleWaterloggedBlock, IBE<VoidChestTileEntity> {
+	public static final MapCodec<VoidChestBlock> CODEC = simpleCodec(VoidChestBlock::new);
 	private static final VoxelShape SHAPE = Block.box(1, 0, 1, 15, 14, 15);
+
+	@Override
+	protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
+		return CODEC;
+	}
 
 	public VoidChestBlock(Properties properties) {
 		super(properties);
@@ -80,10 +86,10 @@ public class VoidChestBlock extends HorizontalDirectionalBlock implements IWrenc
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
 		if (level.isClientSide) return InteractionResult.SUCCESS;
 		withBlockEntityDo(level, pos, voidChest ->
-				NetworkHooks.openScreen((ServerPlayer) player, voidChest, voidChest::sendToMenu)
+				((ServerPlayer) player).openMenu(voidChest, voidChest::sendToMenu)
 		);
 		return InteractionResult.SUCCESS;
 	}

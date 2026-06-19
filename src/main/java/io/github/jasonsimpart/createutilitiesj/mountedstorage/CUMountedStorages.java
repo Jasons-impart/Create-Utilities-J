@@ -9,9 +9,9 @@ import static io.github.jasonsimpart.createutilitiesj.CreateUtilitiesJ.REGISTRAT
 
 public class CUMountedStorages {
 
-    public static final RegistryEntry<VoidChestMountedStorageType> VOID_CHEST = simpleItem("void_chest", VoidChestMountedStorageType::new);
+    public static final RegistryEntry<MountedItemStorageType<?>, VoidChestMountedStorageType> VOID_CHEST = simpleItem("void_chest", VoidChestMountedStorageType::new);
 
-    private static <T extends MountedItemStorageType<?>> RegistryEntry<T> simpleItem(String name, Supplier<T> supplier) {
+    private static <T extends MountedItemStorageType<?>> RegistryEntry<MountedItemStorageType<?>, T> simpleItem(String name, Supplier<T> supplier) {
         return REGISTRATE.mountedItemStorage(name, supplier).register();
     }
 

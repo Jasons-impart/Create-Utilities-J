@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 public class VoidChestMountedStorageType extends MountedItemStorageType<VoidChestMountedStorage> {
 
     public VoidChestMountedStorageType() {
-        super(VoidChestMountedStorage.CODEC);
+        super(VoidChestMountedStorage.MAP_CODEC);
     }
 
     public @Nullable VoidChestMountedStorage mount(Level level, BlockState state, BlockPos pos, @Nullable BlockEntity be) {

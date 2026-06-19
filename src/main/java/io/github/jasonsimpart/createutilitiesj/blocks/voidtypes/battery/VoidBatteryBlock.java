@@ -1,5 +1,6 @@
 package io.github.jasonsimpart.createutilitiesj.blocks.voidtypes.battery;
 
+import com.mojang.serialization.MapCodec;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.IBE;
 
@@ -15,6 +16,12 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import org.jetbrains.annotations.Nullable;
 
 public class VoidBatteryBlock extends HorizontalDirectionalBlock implements IWrenchable, IBE<VoidBatteryTileEntity> {
+	public static final MapCodec<VoidBatteryBlock> CODEC = simpleCodec(VoidBatteryBlock::new);
+
+	@Override
+	protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
+		return CODEC;
+	}
 
 	public VoidBatteryBlock(Properties properties) {
 		super(properties);

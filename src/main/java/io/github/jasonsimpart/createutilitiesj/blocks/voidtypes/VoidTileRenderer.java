@@ -51,10 +51,10 @@ public interface VoidTileRenderer<T extends SmartBlockEntity> {
 
 	private void renderFrame(Matrix4f pose, VertexConsumer consumer,
 							 float x0, float x1, float y0, float y1, float z0, float z1, float z2, float z3) {
-		consumer.vertex(pose, x0, y0, z0).endVertex();
-		consumer.vertex(pose, x1, y0, z1).endVertex();
-		consumer.vertex(pose, x1, y1, z2).endVertex();
-		consumer.vertex(pose, x0, y1, z3).endVertex();
+		consumer.addVertex(pose, x0, y0, z0);
+		consumer.addVertex(pose, x1, y0, z1);
+		consumer.addVertex(pose, x1, y1, z2);
+		consumer.addVertex(pose, x0, y1, z3);
 	}
 
 }

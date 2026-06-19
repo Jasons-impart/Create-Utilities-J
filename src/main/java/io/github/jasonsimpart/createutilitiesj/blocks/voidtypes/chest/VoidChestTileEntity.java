@@ -9,6 +9,7 @@ import net.createmod.catnip.animation.LerpedFloat;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -20,9 +21,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
 import org.apache.commons.lang3.tuple.Triple;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -69,33 +67,29 @@ public class VoidChestTileEntity extends SmartBlockEntity implements MenuProvide
 		return  hasPersistentStorageData() ? getPersistentStorageData().computeStorageIfAbsent(link.getNetworkKey()) : inventory;
 	}
 
-	@Override
-	public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-		if (cap == ForgeCapabilities.ITEM_HANDLER) {
-			return LazyOptional.of(this::getItemStorage).cast();
-		}
-		return super.getCapability(cap, side);
+	public VoidChestInventory getItemStorage(@Nullable Direction side) {
+		return getItemStorage();
 	}
 
 	@Override
-	protected void read(CompoundTag tag, boolean clientPacket) {
+	protected void read(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
 		if (clientPacket) {
 			inventory = new VoidChestInventory(link.getNetworkKey());
-			inventory.deserializeNBT(tag.getCompound("Inventory"));
+			inventory.deserializeNBT(registries, tag.getCompound("Inventory"));
 			openCount = tag.getInt("OpenCount");
 		}
-		super.read(tag, clientPacket);
+		super.read(tag, registries, clientPacket);
 	}
 
 	@Override
-	protected void write(CompoundTag tag, boolean clientPacket) {
+	protected void write(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
 
-		if (hasPersistentStorageData()) tag.put("Inventory", getItemStorage().serializeNBT());
-		else if (inventory != null) tag.put("Inventory", inventory.serializeNBT());
+		if (hasPersistentStorageData()) tag.put("Inventory", getItemStorage().serializeNBT(registries));
+		else if (inventory != null) tag.put("Inventory", inventory.serializeNBT(registries));
 
 		if (clientPacket) tag.putInt("OpenCount", openCount);
 
-		super.write(tag, clientPacket);
+		super.write(tag, registries, clientPacket);
 	}
 
 	@Override

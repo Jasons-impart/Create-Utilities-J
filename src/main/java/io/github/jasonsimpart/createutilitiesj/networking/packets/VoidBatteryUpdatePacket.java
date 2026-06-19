@@ -1,16 +1,20 @@
 package io.github.jasonsimpart.createutilitiesj.networking.packets;
 
-import com.simibubi.create.foundation.networking.SimplePacketBase;
-
 import io.github.jasonsimpart.createutilitiesj.CreateUtilitiesClient;
+import io.github.jasonsimpart.createutilitiesj.CreateUtilitiesJ;
 import io.github.jasonsimpart.createutilitiesj.blocks.voidtypes.battery.VoidBattery;
 import io.github.jasonsimpart.createutilitiesj.blocks.voidtypes.motor.VoidMotorNetworkHandler.NetworkKey;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import org.jetbrains.annotations.NotNull;
 
-public class VoidBatteryUpdatePacket extends SimplePacketBase {
+public class VoidBatteryUpdatePacket implements CustomPacketPayload {
+
+	public static final Type<VoidBatteryUpdatePacket> TYPE = new Type<>(CreateUtilitiesJ.asResource("void_battery_update"));
+	public static final StreamCodec<RegistryFriendlyByteBuf, VoidBatteryUpdatePacket> STREAM_CODEC =
+			StreamCodec.of((buffer, packet) -> packet.write(buffer), VoidBatteryUpdatePacket::new);
 
 	private final NetworkKey key;
 	private final VoidBattery battery;
@@ -20,24 +24,24 @@ public class VoidBatteryUpdatePacket extends SimplePacketBase {
 		this.battery = battery;
 	}
 
-	public VoidBatteryUpdatePacket(FriendlyByteBuf buffer) {
+	public VoidBatteryUpdatePacket(RegistryFriendlyByteBuf buffer) {
 		key = NetworkKey.fromBuffer(buffer);
 		battery = new VoidBattery(key);
-		battery.deserializeNBT(buffer.readNbt());
+		battery.deserializeNBT(buffer.registryAccess(), buffer.readNbt());
 	}
 
-	@Override
-	public void write(FriendlyByteBuf buffer) {
+	public void write(RegistryFriendlyByteBuf buffer) {
 		key.writeToBuffer(buffer);
-		buffer.writeNbt(battery.serializeNBT());
+		buffer.writeNbt(battery.serializeNBT(buffer.registryAccess()));
+	}
+
+	public void handle(IPayloadContext context) {
+		context.enqueueWork(() -> CreateUtilitiesClient.VOID_BATTERIES.storages.put(key, battery));
 	}
 
 	@Override
-	public boolean handle(NetworkEvent.Context context) {
-		context.enqueueWork(() -> DistExecutor.runWhenOn(Dist.CLIENT, () -> () ->
-			CreateUtilitiesClient.VOID_BATTERIES.storages.put(key, battery)
-		));
-		return true;
+	public @NotNull Type<? extends CustomPacketPayload> type() {
+		return TYPE;
 	}
 
 }

@@ -2,8 +2,9 @@ package io.github.jasonsimpart.createutilitiesj.blocks.voidtypes.battery;
 
 import io.github.jasonsimpart.createutilitiesj.CreateUtilitiesJ;
 import io.github.jasonsimpart.createutilitiesj.blocks.voidtypes.motor.VoidMotorNetworkHandler.NetworkKey;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraftforge.energy.EnergyStorage;
+import net.neoforged.neoforge.energy.EnergyStorage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -43,13 +44,13 @@ public class VoidBattery extends EnergyStorage {
 		updated.put(key, true);
 	}
 
-	public CompoundTag serializeNBT() {
+	public CompoundTag serializeNBT(HolderLookup.Provider registries) {
 		CompoundTag nbt = new CompoundTag();
 		nbt.putLong("Energy", energy);
 		return nbt;
 	}
 
-	public void deserializeNBT(CompoundTag nbt) {
+	public void deserializeNBT(HolderLookup.Provider registries, CompoundTag nbt) {
 		energy = nbt.getInt("Energy");
 	}
 }

@@ -12,13 +12,11 @@ import net.createmod.catnip.math.VecHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
 import org.apache.commons.lang3.tuple.Triple;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -63,24 +61,20 @@ public class VoidBatteryTileEntity extends SmartBlockEntity implements IHaveGogg
 				CreateUtilitiesClient.VOID_BATTERIES.computeStorageIfAbsent(link.getNetworkKey());
 	}
 
-	@Override
-	public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-		if (cap == ForgeCapabilities.ENERGY) {
-			return LazyOptional.of(this::getBattery).cast();
-		}
-		return super.getCapability(cap, side);
+	public VoidBattery getBattery(@Nullable Direction side) {
+		return getBattery();
 	}
 
 	@Override
-	protected void read(CompoundTag tag, boolean clientPacket) {
-		super.read(tag, clientPacket);
-		if (clientPacket) getBattery().deserializeNBT(tag.getCompound("Battery"));
+	protected void read(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
+		super.read(tag, registries, clientPacket);
+		if (clientPacket) getBattery().deserializeNBT(registries, tag.getCompound("Battery"));
 	}
 
 	@Override
-	protected void write(CompoundTag tag, boolean clientPacket) {
-		if (clientPacket) tag.put("Battery", getBattery().serializeNBT());
-		super.write(tag, clientPacket);
+	protected void write(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
+		if (clientPacket) tag.put("Battery", getBattery().serializeNBT(registries));
+		super.write(tag, registries, clientPacket);
 	}
 
 	@Override
