@@ -1,8 +1,0 @@
-{
-  "type": "minecraft:stonecutting",
-  "ingredient": {
-    "item": "createutilities:void_steel_ingot"
-  },
-  "result": "createutilities:void_steel_ladder",
-  "count": 2
-}
