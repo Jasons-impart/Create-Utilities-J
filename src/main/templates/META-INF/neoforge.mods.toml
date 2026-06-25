@@ -41,6 +41,6 @@ config="createutilitiesj.mixins.json"
 [[dependencies.${mod_id}]]
     modId="ponder"
     type="required"
-    versionRange="[1.0.85,)"
+    versionRange="[0,)"
     ordering="AFTER"
     side="BOTH"
